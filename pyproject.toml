@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools"]
+
+[project]
+description = "Package to create pydantic models from XSD files."
+dynamic = ["version"]
+name = "xsd-to-pydantic"
+
+authors = [{name = "Mahdi Lamb", email = "mahdilamb@gmail.com"}]
+dependencies = [
+  "pydantic[email]",
+  "xmltodict",
+]
+
+[project.optional-dependencies]
+test = [
+  "black",
+  "isort",
+  "mypy",
+  "bandit",
+  "pytest",
+  "pytest-cov",
+  "docformatter",
+  "pydocstyle",
+  "types-xmltodict"
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "xsdtopydantic.__version__"}
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.docformatter]
+black = true
+recursive = true
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+python_files = [
+  "test_*.py",
+]
+python_functions = ["*_test"]
+testpaths = [
+  "tests",
+]
