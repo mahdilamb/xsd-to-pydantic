@@ -22,6 +22,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install .[test]
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Print dependencies
+        run: pip freeze
       - name: Unit tests [pytest]
         if: ${{ always() }}
         run: |
@@ -30,11 +32,11 @@ jobs:
         if: ${{ always() }}
         run: |
           pydocstyle xsdtopydantic
-      - name: Code quality [black]
+      - name: Check code quality [black]
         if: ${{ always() }}
         run: |
           black --check xsdtopydantic
-      - name: Security [bandit]
+      - name: Check security [bandit]
         if: ${{ always() }}
         run: |
           bandit -r xsd
