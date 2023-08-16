@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "wheel"]
 
 [project]
 description = "Package to create pydantic models from XSD files."
