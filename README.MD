@@ -17,7 +17,7 @@ Add to `pyproject.toml`:
 ```toml
 ...
 dependencies = [
-    "xsdtopydantic@git+https://github.com/mahdilamb/xsd-to-pydantic"
+    "xsd-to-pydantic@git+https://github.com/mahdilamb/xsd-to-pydantic"
 ]
 ```
 
