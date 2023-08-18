@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: mahdilamb/check-python-package@main
+      if: github.ref != 'refs/heads/${{ github.event.repository.default_branch }}'
       with: 
         version_path: xsdtopydantic/__init__.py
 
