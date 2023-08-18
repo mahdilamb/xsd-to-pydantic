@@ -97,6 +97,7 @@ def convert(path: str, output_path: str | None = None, max_depth: int = 16):
         arrays = _find_arrays(current_schema, max_depth=max_depth)
     output += (
         f"""\t@staticmethod\n\tdef from_xml(path: str)->'Document':
+		\"\"\"Read a file as a document.\"\"\"
 		force_list = {arrays}
 		string: str
 		if path.startswith("http"):
@@ -112,6 +113,13 @@ def convert(path: str, output_path: str | None = None, max_depth: int = 16):
 	def to_xml(
 		self, path: str | None = None, namespace_keys: Sequence[str] | None = None
 	) -> str:
+		\"\"\"Convert this document to an XML file.
+		
+		Parameters
+		----------
+			namespace_keys : Sequence[str], optional. Defaults to all namespace keys.
+            Which namespace_keys to include in the root (taken from `__xsd_data__`).    
+		\"\"\"
 		namespace_keys = (
 			namespace_keys if namespace_keys is not None else tuple(self.__xsd_data__)
 		)
