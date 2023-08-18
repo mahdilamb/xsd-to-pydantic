@@ -4,8 +4,15 @@ name: Check code quality and run unit tests
 on: [push]
 
 jobs:
-  build:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: mahdilamb/check-python-package@main
+      with: 
+        version_path: xsdtopydantic/__init__.py
 
+  build:
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,3 +46,4 @@ jobs:
       - name: Check security [bandit]
         if: ${{ always() }}
         run: bandit -r xsdtopydantic
+      
