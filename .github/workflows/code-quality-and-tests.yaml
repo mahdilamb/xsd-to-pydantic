@@ -5,13 +5,10 @@ on: [push]
 
 jobs:
   prepare:
+    if: github.ref != 'refs/heads/${{ github.event.repository.default_branch }}'
     runs-on: ubuntu-latest
     steps:
-    - name: test
-      run: | 
-        echo ${{  github.ref }}  && echo 'refs/heads/${{ github.event.repository.default_branch }}'
     - uses: mahdilamb/check-python-package@main
-      if: github.ref != 'refs/heads/${{ github.event.repository.default_branch }}'
       with: 
         version_path: xsdtopydantic/__init__.py
 
