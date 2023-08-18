@@ -4,6 +4,26 @@ name: Check code quality and run unit tests
 on: [push]
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Check version
+      run: |
+        python -c '
+        import subprocess, re, pkg_resources, sys
+        
+        path, variable = sys.argv[1].split(":")
+        version_pattern = re.compile(
+            rf"^{variable}.*?=.*?[''\"](.*?)[''\"]", flags=re.M
+        )
+        to_version = lambda cmd: pkg_resources.parse_version(
+            version_pattern.findall(subprocess.check_output(cmd.split()).decode())[0]
+        )
+        main = to_version(f"git show main:{path}")
+        current = to_version(f"cat {path}")
+        assert main < current, "Version of current commit has not been incremented."
+        '  xsdtopydantic/__init__.py:__version__
   build:
 
     runs-on: ubuntu-latest
@@ -39,19 +59,4 @@ jobs:
       - name: Check security [bandit]
         if: ${{ always() }}
         run: bandit -r xsdtopydantic
-      - name: Check version
-        run: |
-          python -c '
-          import subprocess, re, pkg_resources, sys
-          
-          path, variable = sys.argv[1].split(":")
-          version_pattern = re.compile(
-              rf"^{variable}.*?=.*?[''\"](.*?)[''\"]", flags=re.M
-          )
-          to_version = lambda cmd: pkg_resources.parse_version(
-              version_pattern.findall(subprocess.check_output(cmd.split()).decode())[0]
-          )
-          main = to_version(f"git show main:{path}")
-          current = to_version(f"cat {path}")
-          assert main < current, "Version of current commit has not been incremented."
-          '  xsdtopydantic/__init__.py:__version__
+      
