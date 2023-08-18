@@ -12,7 +12,7 @@ jobs:
         version_path: xsdtopydantic/__init__.py
 
   build:
-    if: ${{ success() }}
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       matrix:
